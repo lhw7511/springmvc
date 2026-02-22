@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>변수 - SpringEL</title>
+</head>
+<body>
+<h1>SpringEL 표현식</h1>
+
+<ul>Object
+    <li>${user.username} = <span th:text="${user.username}"></span></li>
+    <li>${user.age} = <span th:text="${user.age}"></span></li>
+    <li>${user['username']} = <span th:text="${user['username']}"></span></li>
+    <li>${user['age']} = <span th:text="${user['age']}"></span></li>
+</ul>
+
+<ul>List
+    <li>${users[0].username} = <span th:text="${users[0].username}"></span></li>
+    <li>${users[0].age} = <span th:text="${users[0].age}"></span></li>
+    <li>${users[1].username} = <span th:text="${users[1].username}"></span></li>
+    <li>${users[1].age} = <span th:text="${users[1].age}"></span></li>
+</ul>
+
+<ul>Map
+    <li>${userMap['userA'].username} = <span th:text="${userMap['userA'].username}"></span></li>
+    <li>${userMap['userA'].age} = <span th:text="${userMap['userA'].age}"></span></li>
+    <li>${userMap['userB'].username} = <span th:text="${userMap['userB'].username}"></span></li>
+    <li>${userMap['userB'].age} = <span th:text="${userMap['userB'].age}"></span></li>
+</ul>
+
+</body>
+</html>
