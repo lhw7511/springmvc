@@ -32,7 +32,7 @@
 <body>
 <div class="container" style="max-width: 600px">
     <div class="py-5 text-center">
-        <h2>상품 등록 폼</h2>
+        <h2 th:text="#{page.addItem}">상품 등록 폼</h2>
     </div>
 
     <!--
@@ -43,15 +43,15 @@
 
         <!-- th:field="*{itemName}": id="itemName" name="itemName" value="" 자동 생성 -->
         <div>
-            <label th:for="itemName">상품명</label>
+            <label th:for="itemName" th:text="#{item.itemName}">상품명</label>
             <input type="text" id="itemName" th:field="*{itemName}" class="form-control" placeholder="이름을 입력하세요">
         </div>
         <div>
-            <label th:for="price">가격</label>
+            <label th:for="price" th:text="#{item.price}">가격</label>
             <input type="text" id="price" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">
         </div>
         <div>
-            <label th:for="quantity">수량</label>
+            <label th:for="quantity" th:text="#{item.quantity}">수량</label>
             <input type="text" id="quantity" th:field="*{quantity}" class="form-control" placeholder="수량을 입력하세요">
         </div>
 
