@@ -23,19 +23,19 @@
 
         <!-- id는 수정 불가 (readonly), 히든 필드로 서버에 전달됨 -->
         <div>
-            <label th:for="id">상품 ID</label>
+            <label th:for="id" th:text="#{item.id}">상품 ID</label>
             <input type="text" id="id" th:field="*{id}" class="form-control" readonly>
         </div>
         <div>
-            <label th:for="itemName">상품명</label>
+            <label th:for="itemName" th:text="#{item.itemName}">상품명</label>
             <input type="text" id="itemName" th:field="*{itemName}" class="form-control">
         </div>
         <div>
-            <label th:for="price">가격</label>
+            <label th:for="price" th:text="#{item.price}">가격</label>
             <input type="text" id="price" th:field="*{price}" class="form-control">
         </div>
         <div>
-            <label th:for="quantity">수량</label>
+            <label th:for="quantity" th:text="#{item.quantity}">수량</label>
             <input type="text" id="quantity" th:field="*{quantity}" class="form-control">
         </div>
 

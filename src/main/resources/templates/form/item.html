@@ -19,19 +19,19 @@
     </div>
 
     <div>
-        <label>상품 ID</label>
+        <label th:text="#{item.id}">상품 ID</label>
         <input type="text" th:value="${item.id}" readonly class="form-control">
     </div>
     <div>
-        <label>상품명</label>
+        <label th:text="#{item.itemName}">상품명</label>
         <input type="text" th:value="${item.itemName}" readonly class="form-control">
     </div>
     <div>
-        <label>가격</label>
+        <label th:text="#{item.price}">가격</label>
         <input type="text" th:value="${item.price}" readonly class="form-control">
     </div>
     <div>
-        <label>수량</label>
+        <label th:text="#{item.quantity}">수량</label>
         <input type="text" th:value="${item.quantity}" readonly class="form-control">
     </div>
 
@@ -99,14 +99,14 @@
         <div class="col">
             <button class="w-100 btn btn-primary btn-lg"
                     th:onclick="|location.href='@{/form/items/{itemId}/edit(itemId=${item.id})}'|"
-                    type="button">상품 수정
+                    type="button" th:text="#{page.updateItem}">상품 수정
             </button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='items.html'"
                     th:onclick="|location.href='@{/form/items}'|"
-                    type="button">목록으로
+                    type="button" th:text="#{button.cancel}">목록으로
             </button>
         </div>
     </div>
