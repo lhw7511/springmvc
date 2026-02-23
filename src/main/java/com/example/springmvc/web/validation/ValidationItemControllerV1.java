@@ -112,7 +112,33 @@ public class ValidationItemControllerV1 {
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item, Model model) {
+
+        // 검증 오류 결과를 담는 Map
+        Map<String, String> errors = new HashMap<>();
+
+        if (!StringUtils.hasText(item.getItemName())) {
+            errors.put("itemName", "상품 이름은 필수입니다.");
+        }
+        if (item.getPrice() == null || item.getPrice() < 1000 || item.getPrice() > 1000000) {
+            errors.put("price", "가격은 1,000 ~ 1,000,000 까지 허용합니다.");
+        }
+        if (item.getQuantity() == null || item.getQuantity() > 9999) {
+            errors.put("quantity", "수량은 최대 9,999 까지 허용합니다.");
+        }
+        if (item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if (resultPrice < 10000) {
+                errors.put("globalError", "가격 * 수량의 합은 10,000원 이상이어야 합니다. 현재 값 = " + resultPrice);
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            log.info("errors = {}", errors);
+            model.addAttribute("errors", errors);
+            return "validation/v1/editForm";
+        }
+
         itemRepository.update(itemId, item);
         return "redirect:/validation/v1/items/{itemId}";
     }

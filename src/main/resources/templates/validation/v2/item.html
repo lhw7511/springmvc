@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <!--
-  [38강] 검증 V1 - 상품 상세
-  /validation/v1/items/{itemId}
+  검증 V2 - 상품 상세
+  /validation/v2/items/{itemId}
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -15,7 +15,6 @@
         <h2 th:text="#{page.item}">상품 상세</h2>
     </div>
 
-    <!-- 저장 완료 메시지 -->
     <h2 th:if="${param.status}" th:text="'저장 완료!'"></h2>
 
     <div>
@@ -40,13 +39,13 @@
     <div class="row">
         <div class="col">
             <button class="w-100 btn btn-primary btn-lg"
-                    th:onclick="|location.href='@{/validation/v1/items/{itemId}/edit(itemId=${item.id})}'|"
+                    th:onclick="|location.href='@{/validation/v2/items/{itemId}/edit(itemId=${item.id})}'|"
                     type="button" th:text="#{page.updateItem}">상품 수정
             </button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
-                    th:onclick="|location.href='@{/validation/v1/items}'|"
+                    th:onclick="|location.href='@{/validation/v2/items}'|"
                     type="button" th:text="#{button.cancel}">목록으로
             </button>
         </div>

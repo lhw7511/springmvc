@@ -1,15 +1,18 @@
 <!DOCTYPE HTML>
 <!--
-  [38강] 검증 V1 - 상품 등록 폼
-  검증 오류를 errors Map으로 받아서 표시
-  - errors 맵에 해당 필드 키가 있으면 오류 메시지 출력
-  - th:if="${errors?.containsKey('필드명')}": errors가 null이어도 안전하게 처리 (?. 사용)
-  - 오류 있는 필드는 class="field-error" 로 빨간 테두리 표시
+  [39강] 검증 V2 - 상품 등록 폼
+  BindingResult를 사용한 검증 오류 표시
+
+  V1과의 차이점:
+  - errors Map 대신 #fields 사용
+  - th:errors: 해당 필드에 오류가 있으면 메시지 출력 (없으면 태그 자체가 사라짐)
+  - th:errorclass: 오류가 있을 때 지정한 class를 자동으로 추가
+  - th:errors="*{global}": 글로벌 오류 출력 (ObjectError)
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>상품 등록 폼 V1</title>
+    <title>상품 등록 폼 V2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         .field-error {
@@ -26,46 +29,38 @@
 
     <form action="item.html" th:action th:object="${item}" method="post">
 
-        <!-- 글로벌 오류 메시지: 특정 필드가 아닌 전체 오류 (가격 * 수량 복합 규칙 등) -->
-        <div th:if="${errors?.containsKey('globalError')}">
-            <p class="field-error" th:text="${errors['globalError']}">전체 오류 메시지</p>
+        <!-- 글로벌 오류 (ObjectError): th:errors="*{global}" -->
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">글로벌 오류 메시지</p>
         </div>
 
         <div>
             <label th:for="itemName" th:text="#{item.itemName}">상품명</label>
             <!--
-              th:classappend: 기존 class에 조건부로 추가
-              errors가 null이어도 ?. 연산자로 NPE 방지
+              th:errorclass: 해당 필드에 오류가 있으면 지정한 class 추가
+              th:errors: 해당 필드의 오류 메시지 출력, 오류 없으면 태그 미출력
             -->
             <input type="text" id="itemName" th:field="*{itemName}"
-                   class="form-control"
-                   th:classappend="${errors?.containsKey('itemName')} ? 'field-error'"
+                   class="form-control" th:errorclass="field-error"
                    placeholder="이름을 입력하세요">
-            <div class="field-error" th:if="${errors?.containsKey('itemName')}"
-                 th:text="${errors['itemName']}">상품명 오류
-            </div>
+            <div class="field-error" th:errors="*{itemName}">상품명 오류</div>
         </div>
 
         <div>
             <label th:for="price" th:text="#{item.price}">가격</label>
             <input type="text" id="price" th:field="*{price}"
-                   class="form-control"
-                   th:classappend="${errors?.containsKey('price')} ? 'field-error'"
+                   class="form-control" th:errorclass="field-error"
                    placeholder="가격을 입력하세요">
-            <div class="field-error" th:if="${errors?.containsKey('price')}"
-                 th:text="${errors['price']}">가격 오류
-            </div>
+            <div class="field-error" th:errors="*{price}">가격 오류</div>
         </div>
 
         <div>
             <label th:for="quantity" th:text="#{item.quantity}">수량</label>
             <input type="text" id="quantity" th:field="*{quantity}"
-                   class="form-control"
-                   th:classappend="${errors?.containsKey('quantity')} ? 'field-error'"
+                   class="form-control" th:errorclass="field-error"
                    placeholder="수량을 입력하세요">
-            <div class="field-error" th:if="${errors?.containsKey('quantity')}"
-                 th:text="${errors['quantity']}">수량 오류
-            </div>
+            <div class="field-error" th:errors="*{quantity}">수량 오류</div>
         </div>
 
         <hr class="my-4">
@@ -76,7 +71,7 @@
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
-                        th:onclick="|location.href='@{/validation/v1/items}'|"
+                        th:onclick="|location.href='@{/validation/v2/items}'|"
                         type="button" th:text="#{button.cancel}">취소
                 </button>
             </div>
