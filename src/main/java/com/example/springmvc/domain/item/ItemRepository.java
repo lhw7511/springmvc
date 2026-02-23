@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 상품 저장소 (메모리 기반)
+ * - 실습용 인메모리 Repository (DB 없이 Map으로 구현)
+ * - static Map을 사용하므로 서버 재시작 시 데이터 초기화됨
+ * - @Repository: 스프링 빈으로 등록
+ */
 @Repository
 public class ItemRepository {
 
