@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>유틸리티 객체와 날짜</title>
+</head>
+<body>
+
+<h1>LocalDateTime - 유틸리티 객체</h1>
+
+<ul>
+    <li>default = <span th:text="${localDateTime}"></span></li>
+    <li>#temporals.format() = <span th:text="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span></li>
+    <li>#temporals.formatISO() = <span th:text="${#temporals.formatISO(localDateTime)}"></span></li>
+</ul>
+
+<h1>LocalDateTime - 필드 접근</h1>
+
+<ul>
+    <li>year = <span th:text="${#temporals.year(localDateTime)}"></span></li>
+    <li>month = <span th:text="${#temporals.month(localDateTime)}"></span></li>
+    <li>monthName = <span th:text="${#temporals.monthName(localDateTime)}"></span></li>
+    <li>monthNameShort = <span th:text="${#temporals.monthNameShort(localDateTime)}"></span></li>
+    <li>day = <span th:text="${#temporals.day(localDateTime)}"></span></li>
+    <li>dayOfWeek = <span th:text="${#temporals.dayOfWeek(localDateTime)}"></span></li>
+    <li>dayOfWeekName = <span th:text="${#temporals.dayOfWeekName(localDateTime)}"></span></li>
+    <li>dayOfWeekNameShort = <span th:text="${#temporals.dayOfWeekNameShort(localDateTime)}"></span></li>
+    <li>hour = <span th:text="${#temporals.hour(localDateTime)}"></span></li>
+    <li>minute = <span th:text="${#temporals.minute(localDateTime)}"></span></li>
+    <li>second = <span th:text="${#temporals.second(localDateTime)}"></span></li>
+    <li>nanosecond = <span th:text="${#temporals.nanosecond(localDateTime)}"></span></li>
+</ul>
+
+</body>
+</html>
