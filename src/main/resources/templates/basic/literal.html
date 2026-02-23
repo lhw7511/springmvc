@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리터럴</title>
+</head>
+<body>
+
+<h1>리터럴</h1>
+
+<ul>
+    <!--주의! 다음 주석을 풀면 예외가 발생함-->
+    <!-- <li><span th:text="hello world!"></span></li>-->
+
+    <li>문자 리터럴 = <span th:text="'hello'"></span></li>
+    <li>문자 리터럴 + 공백 = <span th:text="'hello world!'"></span></li>
+    <li>숫자 리터럴 = <span th:text="10 + 20 + 1"></span></li>
+    <li>불린 리터럴 = <span th:text="true"></span></li>
+    <li>null 리터럴 = <span th:text="null"></span></li>
+</ul>
+
+<h1>리터럴 대체(Literal Substitutions)</h1>
+
+<ul>
+    <li>리터럴 대체 = <span th:text="|hello ${data}|"></span></li>
+</ul>
+
+</body>
+</html>
