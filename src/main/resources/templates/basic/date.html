@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<!--
+  [강의 9강] 유틸리티 객체와 날짜
+  #temporals: 타임리프가 제공하는 Java 8 날짜/시간 유틸리티 객체
+  - format()         → 원하는 패턴으로 날짜 포맷팅
+  - formatISO()      → ISO 8601 형식으로 포맷팅
+  - year/month/day   → 각 필드 개별 접근
+  - dayOfWeekName()  → 요일 이름 (Monday, Tuesday...)
+  ※ thymeleaf-extras-java8time 라이브러리 필요
+    (Spring Boot Thymeleaf starter에 자동 포함됨)
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -7,24 +17,40 @@
 <body>
 
 <h1>LocalDateTime - 유틸리티 객체</h1>
-
 <ul>
+    <!-- 기본 출력: toString() 결과 -->
     <li>default = <span th:text="${localDateTime}"></span></li>
+
+    <!-- format(): 원하는 패턴으로 포맷팅 -->
     <li>#temporals.format() = <span th:text="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span></li>
+
+    <!-- formatISO(): ISO 8601 표준 포맷 (2024-01-01T00:00:00.000+09:00) -->
     <li>#temporals.formatISO() = <span th:text="${#temporals.formatISO(localDateTime)}"></span></li>
 </ul>
 
 <h1>LocalDateTime - 필드 접근</h1>
-
 <ul>
+    <!-- 날짜 관련 필드 -->
     <li>year = <span th:text="${#temporals.year(localDateTime)}"></span></li>
     <li>month = <span th:text="${#temporals.month(localDateTime)}"></span></li>
+
+    <!-- monthName: 월 이름 전체 (January, February...) -->
     <li>monthName = <span th:text="${#temporals.monthName(localDateTime)}"></span></li>
+
+    <!-- monthNameShort: 월 이름 축약 (Jan, Feb...) -->
     <li>monthNameShort = <span th:text="${#temporals.monthNameShort(localDateTime)}"></span></li>
     <li>day = <span th:text="${#temporals.day(localDateTime)}"></span></li>
+
+    <!-- dayOfWeek: 요일 숫자 (1=Monday ~ 7=Sunday) -->
     <li>dayOfWeek = <span th:text="${#temporals.dayOfWeek(localDateTime)}"></span></li>
+
+    <!-- dayOfWeekName: 요일 이름 전체 (Monday, Tuesday...) -->
     <li>dayOfWeekName = <span th:text="${#temporals.dayOfWeekName(localDateTime)}"></span></li>
+
+    <!-- dayOfWeekNameShort: 요일 이름 축약 (Mon, Tue...) -->
     <li>dayOfWeekNameShort = <span th:text="${#temporals.dayOfWeekNameShort(localDateTime)}"></span></li>
+
+    <!-- 시간 관련 필드 -->
     <li>hour = <span th:text="${#temporals.hour(localDateTime)}"></span></li>
     <li>minute = <span th:text="${#temporals.minute(localDateTime)}"></span></li>
     <li>second = <span th:text="${#temporals.second(localDateTime)}"></span></li>

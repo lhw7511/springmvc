@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  [강의 5강] 텍스트 - text, utext
+  타임리프에서 텍스트를 출력하는 2가지 방법
+  1. th:text="${data}" → 태그의 content를 동적으로 출력
+  2. [[${data}]]       → 태그 없이 인라인으로 직접 출력
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +13,10 @@
 <body>
 <h1>텍스트 출력 기본</h1>
 <ul>
+    <!-- th:text: 태그 안의 내용을 ${data} 값으로 교체해서 출력 -->
     <li>th:text 사용 <span th:text="${data}"></span></li>
+
+    <!-- [[...]]: 태그 없이 HTML 안에서 바로 변수 출력 (인라인 표현식) -->
     <li>컨텐츠 안에서 직접 출력 = [[${data}]]</li>
 </ul>
 </body>

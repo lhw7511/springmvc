@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!--
+  [강의 6강] 텍스트 - Unescape
+  th:text vs th:utext 차이
+  - th:text  → HTML 엔티티로 이스케이프 처리 (<b> → &lt;b&gt; 로 출력, 태그가 문자로 보임)
+  - th:utext → 이스케이프 없이 HTML 태그 그대로 렌더링 (<b>spring</b> → spring이 굵게 보임)
+  ⚠️ th:utext는 XSS 공격 위험이 있으므로 신뢰된 데이터에만 사용!
+
+  인라인 표현식도 동일:
+  - [[...]]  → 이스케이프 처리 (th:text 와 동일)
+  - [(....)] → 언이스케이프 처리 (th:utext 와 동일)
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -7,12 +18,21 @@
 <body>
 <h1>text vs utext</h1>
 <ul>
+    <!-- th:text: <b> 태그가 이스케이프 처리되어 문자 그대로 출력됨 -->
     <li>th:text = <span th:text="${data}"></span></li>
+
+    <!-- th:utext: <b> 태그가 실제 HTML로 렌더링되어 굵게 출력됨 -->
     <li>th:utext = <span th:utext="${data}"></span></li>
 </ul>
+
 <h1><span th:inline="none">[[...]] vs [(...)]</span></h1>
 <ul>
+    <!-- th:inline="none": 이 태그 안에서는 [[...]] 를 타임리프로 처리하지 않고 문자 그대로 출력 -->
+
+    <!-- [[...]]: 인라인 표현식, 이스케이프 처리됨 -->
     <li><span th:inline="none">[[...]] = </span>[[${data}]]</li>
+
+    <!-- [(....)]: 인라인 언이스케이프 표현식, HTML 태그 그대로 렌더링 -->
     <li><span th:inline="none">[(...)] = </span>[(${data})]</li>
 </ul>
 </body>

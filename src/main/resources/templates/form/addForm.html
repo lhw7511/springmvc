@@ -1,4 +1,29 @@
 <!DOCTYPE HTML>
+<!--
+  [강의 24강] 상품 등록 폼
+  타임리프 스프링 통합 핵심 기능 실습
+  - th:object="${item}": 폼에서 사용할 객체 지정 (컨트롤러에서 빈 Item 전달)
+  - th:field="*{필드명}": id, name, value 속성을 자동으로 생성해줌
+    ex) th:field="*{itemName}" → id="itemName" name="itemName" value="" 자동 생성
+
+  [강의 26강] 단일 체크박스
+  - th:field="*{open}": 체크 시 open=true, 미체크 시 히든 필드로 open=false 전송
+  - 히든 필드(_open): 체크박스 미체크 시 아무것도 안 넘어오는 문제를 타임리프가 자동으로 히든 필드 생성해서 해결
+
+  [강의 27강] 멀티 체크박스
+  - th:field="*{regions}": List 타입 바인딩
+  - th:value="${region.key}": 체크박스의 실제 전송 값
+  - ${#ids.prev('regions')}: th:each로 반복 생성 시 id가 regions1, regions2... 로 자동 생성됨
+    label의 for 속성도 맞춰줘야 해서 #ids.prev() 사용
+
+  [강의 28강] 라디오 버튼
+  - th:field="*{itemType}": enum 타입 바인딩
+  - th:value="${type.name()}": enum의 name() 값 (BOOK, FOOD, ETC)
+
+  [강의 30강] 셀렉트 박스
+  - th:field="*{deliveryCode}": String 타입 바인딩
+  - th:selected: 현재 값과 일치하는 option 자동 선택 (th:field가 자동 처리)
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -10,8 +35,13 @@
         <h2>상품 등록 폼</h2>
     </div>
 
+    <!--
+      th:action: action 속성을 현재 URL로 설정 (값 생략 시 현재 URL 그대로)
+      th:object: 이 폼에서 사용할 객체 지정 → *{...} 로 필드 접근 가능
+    -->
     <form action="item.html" th:action th:object="${item}" method="post">
 
+        <!-- th:field="*{itemName}": id="itemName" name="itemName" value="" 자동 생성 -->
         <div>
             <label th:for="itemName">상품명</label>
             <input type="text" id="itemName" th:field="*{itemName}" class="form-control" placeholder="이름을 입력하세요">
@@ -27,7 +57,7 @@
 
         <hr class="my-4">
 
-        <!-- 판매 여부 - 단일 체크박스 -->
+        <!-- [26강] 단일 체크박스: th:field 사용 시 히든 필드 자동 생성으로 미체크 시 false 전송 -->
         <div>
             <label>판매 여부</label>
             <div class="form-check">
@@ -36,29 +66,38 @@
             </div>
         </div>
 
-        <!-- 등록 지역 - 멀티 체크박스 -->
+        <!-- [27강] 멀티 체크박스: regions Map을 반복하여 체크박스 생성 -->
         <div>
             <label>등록 지역</label>
             <div th:each="region : ${regions}" class="form-check form-check-inline">
+                <!--
+                  th:field="*{regions}": List<String> 바인딩
+                  th:each로 반복 시 id가 regions1, regions2... 자동 생성
+                -->
                 <input type="checkbox" th:field="*{regions}" th:value="${region.key}" class="form-check-input">
+                <!-- #ids.prev('regions'): 바로 앞에서 생성된 id(regions1, regions2...)를 label for에 연결 -->
                 <label th:for="${#ids.prev('regions')}" th:text="${region.value}" class="form-check-label">서울</label>
             </div>
         </div>
 
-        <!-- 상품 종류 - 라디오 버튼 -->
+        <!-- [28강] 라디오 버튼: ItemType enum 반복하여 라디오 버튼 생성 -->
         <div>
             <label>상품 종류</label>
             <div th:each="type : ${itemTypes}" class="form-check form-check-inline">
+                <!-- th:value="${type.name()}": enum의 이름(BOOK, FOOD, ETC)을 값으로 전송 -->
                 <input type="radio" th:field="*{itemType}" th:value="${type.name()}" class="form-check-input">
+                <!-- type.description: enum의 한글 이름 (도서, 음식, 기타) -->
                 <label th:for="${#ids.prev('itemType')}" th:text="${type.description}" class="form-check-label">BOOK</label>
             </div>
         </div>
 
-        <!-- 배송 방식 - 셀렉트 박스 -->
+        <!-- [30강] 셀렉트 박스: deliveryCodes 목록으로 option 생성 -->
         <div>
             <label th:for="deliveryCode">배송 방식</label>
+            <!-- th:field="*{deliveryCode}": 선택된 code 값이 자동으로 selected 처리됨 -->
             <select th:field="*{deliveryCode}" class="form-select">
                 <option value="">==배송 방식 선택==</option>
+                <!-- delivery.code: 전송 값 / delivery.displayName: 화면 표시 -->
                 <option th:each="delivery : ${deliveryCodes}"
                         th:value="${delivery.code}"
                         th:text="${delivery.displayName}">FAST

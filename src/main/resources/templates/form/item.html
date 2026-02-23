@@ -1,4 +1,12 @@
 <!DOCTYPE HTML>
+<!--
+  [강의 29강, 31강] 상품 상세 - 체크박스/라디오/셀렉트 읽기 전용 표시
+  수정 불가 상태(disabled)로 저장된 값을 화면에 표시
+  - 체크박스: th:if / th:unless 로 open 값에 따라 checked 여부 표시
+  - 멀티 체크박스: #lists.contains() 로 저장된 regions에 포함 여부 확인
+  - 라디오 버튼: item.itemType == type 비교로 선택된 값 표시
+  - 셀렉트 박스: item.deliveryCode == delivery.code 비교로 선택된 option 표시
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -29,23 +37,29 @@
 
     <hr class="my-4">
 
-    <!-- 판매 여부 -->
+    <!-- [26강] 단일 체크박스 표시: open 값이 true/false에 따라 checked 속성 표시 -->
     <div>
         <label>판매 여부</label>
+        <!-- th:if="${item.open}": true일 때만 이 div 렌더링 (checked 표시) -->
         <div th:if="${item.open}" class="form-check">
             <input type="checkbox" class="form-check-input" disabled checked>
             <label class="form-check-label">판매 오픈</label>
         </div>
+        <!-- th:unless="${item.open}": false일 때 이 div 렌더링 (unchecked 표시) -->
         <div th:unless="${item.open}" class="form-check">
             <input type="checkbox" class="form-check-input" disabled>
             <label class="form-check-label">판매 오픈</label>
         </div>
     </div>
 
-    <!-- 등록 지역 -->
+    <!-- [27강] 멀티 체크박스 표시: 저장된 regions 목록에 포함된 항목만 체크 표시 -->
     <div>
         <label>등록 지역</label>
         <div th:each="region : ${regions}" class="form-check form-check-inline">
+            <!--
+              #lists.contains(list, value): list에 value가 포함되어 있으면 true
+              → 저장된 regions에 현재 region.key가 있으면 checked 처리
+            -->
             <input type="checkbox" class="form-check-input" disabled
                    th:value="${region.key}"
                    th:checked="${#lists.contains(item.regions, region.key)}">
@@ -53,10 +67,11 @@
         </div>
     </div>
 
-    <!-- 상품 종류 -->
+    <!-- [28강] 라디오 버튼 표시: 저장된 itemType과 일치하는 항목 선택 표시 -->
     <div>
         <label>상품 종류</label>
         <div th:each="type : ${itemTypes}" class="form-check form-check-inline">
+            <!-- item.itemType == type: enum 비교로 일치하면 checked -->
             <input type="radio" class="form-check-input" disabled
                    th:value="${type.name()}"
                    th:checked="${item.itemType == type}">
@@ -64,11 +79,12 @@
         </div>
     </div>
 
-    <!-- 배송 방식 -->
+    <!-- [30강] 셀렉트 박스 표시: 저장된 deliveryCode와 일치하는 option selected 처리 -->
     <div>
         <label>배송 방식</label>
         <select class="form-select" disabled>
             <option value="">==배송 방식 선택==</option>
+            <!-- item.deliveryCode == delivery.code: 일치하면 selected -->
             <option th:each="delivery : ${deliveryCodes}"
                     th:value="${delivery.code}"
                     th:text="${delivery.displayName}"

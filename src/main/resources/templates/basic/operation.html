@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!--
+  [강의 12강] 연산
+  타임리프에서 사용 가능한 연산자들
+
+  산술 연산: +, -, *, /, %
+  비교 연산: >, <, >=, <= (HTML에서는 gt, lt, ge, le 사용 권장 - 태그와 혼동 방지)
+             ==, != (동등 비교)
+  조건식(삼항): (조건) ? 참 : 거짓
+  Elvis 연산자: 값 ?: 기본값 → 값이 null이면 기본값 출력 (자바의 ?: 와 동일)
+  No-Operation(_): 값이 null이면 타임리프가 처리를 포기하고 HTML 태그 내 원본 내용 그대로 출력
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -9,11 +20,13 @@
 <h1>산술 연산</h1>
 <ul>
     <li>10 + 2 = <span th:text="10 + 2"></span></li>
+    <!-- % 연산자: 나머지, == 으로 비교하면 boolean 결과 반환 -->
     <li>10 % 2 == 0 = <span th:text="10 % 2 == 0"></span></li>
 </ul>
 
 <h1>비교 연산</h1>
 <ul>
+    <!-- HTML에서 > 는 태그와 혼동될 수 있으므로 &gt; 또는 gt 사용 권장 -->
     <li>1 > 10 = <span th:text="1 &gt; 10"></span></li>
     <li>1 gt 10 = <span th:text="1 gt 10"></span></li>
     <li>1 >= 10 = <span th:text="1 >= 10"></span></li>
@@ -24,18 +37,26 @@
 
 <h1>조건식</h1>
 <ul>
+    <!-- 삼항 연산자: (조건) ? 참일때 : 거짓일때 -->
     <li>(10 % 2 == 0)? '짝수':'홀수' = <span th:text="(10 % 2 == 0)? '짝수':'홀수'"></span></li>
 </ul>
 
 <h1>Elvis 연산자</h1>
 <ul>
+    <!-- ${data}?: '기본값' → data가 null이 아니면 data 출력, null이면 기본값 출력 -->
     <li>${data}?: '데이터가 없습니다.' = <span th:text="${data}?: '데이터가 없습니다.'"></span></li>
+
+    <!-- nullData는 null이므로 기본값 출력 -->
     <li>${nullData}?: '데이터가 없습니다.' = <span th:text="${nullData}?: '데이터가 없습니다.'"></span></li>
 </ul>
 
 <h1>No-Operation</h1>
 <ul>
+    <!-- _ (No-Operation): null이 아니면 data 출력, null이면 타임리프가 개입 안 하고 태그 내 HTML 그대로 출력 -->
+    <!-- data = "Spring!" 이므로 "Spring!" 출력 -->
     <li>${data}?: _ = <span th:text="${data}?: _">데이터가 없습니다.</span></li>
+
+    <!-- nullData = null 이므로 타임리프가 개입 안 하고 "데이터가 없습니다." 그대로 출력 -->
     <li>${nullData}?: _ = <span th:text="${nullData}?: _">데이터가 없습니다.</span></li>
 </ul>
 

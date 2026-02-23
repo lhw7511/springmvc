@@ -1,4 +1,13 @@
 <!DOCTYPE HTML>
+<!--
+  [강의 24강~30강] 상품 수정 폼
+  addForm.html과 동일한 구조이나 기존 데이터가 채워져 있음
+  - th:field: 기존 저장된 값을 자동으로 채워줌
+  - 체크박스: 기존에 체크된 항목 자동 checked 처리
+  - 라디오버튼: 기존에 선택된 항목 자동 checked 처리
+  - 셀렉트박스: 기존에 선택된 항목 자동 selected 처리
+  → th:field 가 이 모든 것을 자동으로 처리해줌 (addForm과 코드 구조 동일)
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -12,6 +21,7 @@
 
     <form action="item.html" th:action th:object="${item}" method="post">
 
+        <!-- id는 수정 불가 (readonly), 히든 필드로 서버에 전달됨 -->
         <div>
             <label th:for="id">상품 ID</label>
             <input type="text" id="id" th:field="*{id}" class="form-control" readonly>
@@ -31,7 +41,7 @@
 
         <hr class="my-4">
 
-        <!-- 판매 여부 - 단일 체크박스 -->
+        <!-- [26강] 단일 체크박스: 기존 open 값이 true면 자동으로 checked 처리 -->
         <div>
             <label>판매 여부</label>
             <div class="form-check">
@@ -40,7 +50,7 @@
             </div>
         </div>
 
-        <!-- 등록 지역 - 멀티 체크박스 -->
+        <!-- [27강] 멀티 체크박스: 기존에 체크된 regions 항목들 자동 checked 처리 -->
         <div>
             <label>등록 지역</label>
             <div th:each="region : ${regions}" class="form-check form-check-inline">
@@ -49,7 +59,7 @@
             </div>
         </div>
 
-        <!-- 상품 종류 - 라디오 버튼 -->
+        <!-- [28강] 라디오 버튼: 기존에 선택된 itemType 자동 checked 처리 -->
         <div>
             <label>상품 종류</label>
             <div th:each="type : ${itemTypes}" class="form-check form-check-inline">
@@ -58,7 +68,7 @@
             </div>
         </div>
 
-        <!-- 배송 방식 - 셀렉트 박스 -->
+        <!-- [30강] 셀렉트 박스: 기존에 선택된 deliveryCode 자동 selected 처리 -->
         <div>
             <label th:for="deliveryCode">배송 방식</label>
             <select th:field="*{deliveryCode}" class="form-select">

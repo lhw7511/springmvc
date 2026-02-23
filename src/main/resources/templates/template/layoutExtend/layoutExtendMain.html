@@ -1,10 +1,21 @@
 <!DOCTYPE html>
+<!--
+  [강의 21강] 템플릿 레이아웃2 - 레이아웃 상속 사용 페이지
+  HTML 전체를 layoutFile.html 레이아웃으로 교체하는 방식
+  th:replace="~{layoutFile :: layout(~{::title}, ~{::section})}"
+  - 이 파일 전체(html 태그)가 layoutFile.html의 layout 조각으로 교체됨
+  - ~{::title}  : 이 파일의 <title> 태그를 파라미터로 전달
+  - ~{::section}: 이 파일의 <section> 태그를 파라미터로 전달 → 본문 내용
+  → 마치 자바 상속처럼 레이아웃을 확장하는 개념!
+-->
 <html th:replace="~{template/layoutExtend/layoutFile :: layout(~{::title}, ~{::section})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!-- 이 title이 layoutFile.html의 ${title} 자리에 들어감 -->
     <title>메인 페이지 타이틀</title>
 </head>
 <body>
+<!-- 이 section이 layoutFile.html의 ${content} 자리에 들어감 -->
 <section>
     <p>메인 페이지 컨텐츠</p>
     <div>메인 페이지 포함 내용</div>
