@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<footer th:fragment="copy">
+    푸터 자리입니다.
+</footer>
+
+<footer th:fragment="copyParam (title, message)">
+    <p>파라미터 자리입니다.</p>
+    <p th:text="${title}"></p>
+    <p th:text="${message}"></p>
+</footer>
+
+</body>
+</html>
