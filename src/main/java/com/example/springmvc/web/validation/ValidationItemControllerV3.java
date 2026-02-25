@@ -8,17 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 /**
- * [Validator 분리 2]
- * @InitBinder로 WebDataBinder에 ItemValidator 등록
- * - 이 컨트롤러 요청마다 자동으로 ItemValidator가 WebDataBinder에 등록됨
- * - @Validated 애노테이션만 붙이면 validate() 자동 실행, 직접 호출 불필요
+ * [Bean Validation - 수정에 적용 / groups]
+ * - @InitBinder, ItemValidator 제거
+ * - groups로 등록/수정 검증 분리
+ *   - 등록: SaveCheck.class 그룹만 검증
+ *   - 수정: UpdateCheck.class 그룹만 검증
  */
 @Slf4j
 @Controller
@@ -27,12 +27,6 @@ import java.util.List;
 public class ValidationItemControllerV3 {
 
     private final ItemRepository itemRepository;
-    private final ItemValidator itemValidator;
-
-    @InitBinder
-    public void init(WebDataBinder dataBinder) {
-        dataBinder.addValidators(itemValidator);
-    }
 
     @GetMapping
     public String items(Model model) {
@@ -55,13 +49,20 @@ public class ValidationItemControllerV3 {
     }
 
     /**
-     * [Validator 분리 2] - @Validated로 자동 검증
-     * - @InitBinder에 등록된 ItemValidator가 자동 실행됨
-     * - itemValidator.validate() 직접 호출 불필요
+     * [Bean Validation - 스프링 적용]
+     * - @Validated로 Bean Validation 자동 실행
      */
     @PostMapping("/add")
-    public String addItemV1(@Validated @ModelAttribute Item item, BindingResult bindingResult,
-                            RedirectAttributes redirectAttributes) {
+    public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes) {
+
+        // 특정 필드가 아닌 복합 룰 검증 (글로벌 오류)
+        if (item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if (resultPrice < 10000) {
+                bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
+            }
+        }
 
         if (bindingResult.hasErrors()) {
             log.info("errors = {}", bindingResult);
@@ -84,6 +85,14 @@ public class ValidationItemControllerV3 {
     @PostMapping("/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @Validated @ModelAttribute Item item,
                        BindingResult bindingResult) {
+
+        // 글로벌 오류
+        if (item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if (resultPrice < 10000) {
+                bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
+            }
+        }
 
         if (bindingResult.hasErrors()) {
             log.info("errors = {}", bindingResult);

@@ -9,6 +9,10 @@ import java.util.List;
  * - 타임리프 스프링 통합 실습용 (22강~31강)
  * - @Data: getter, setter, toString, equals, hashCode 자동 생성 (Lombok)
  *
+ * [폼 전송 객체 분리 이후]
+ * - 검증 어노테이션 제거 → 검증은 ItemSaveForm, ItemUpdateForm이 담당
+ * - Item은 순수 도메인 객체 역할만 수행
+ *
  * 필드 설명:
  * - open: 판매 여부 → 단일 체크박스 (Boolean, 체크 안 하면 null)
  * - regions: 등록 지역 → 멀티 체크박스 (List, 여러 개 선택 가능)
