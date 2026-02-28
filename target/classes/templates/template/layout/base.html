@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+  [강의 20강] 템플릿 레이아웃1 - 공통 레이아웃 정의 파일 (base.html)
+  head 태그를 레이아웃으로 만들어 공통 CSS/JS는 여기서 관리
+  th:fragment="common_header(title, links)": title과 links를 파라미터로 받음
+  - ${title}: 각 페이지에서 넘겨주는 <title> 태그
+  - ${links}: 각 페이지에서 넘겨주는 추가 <link> 태그들
+  th:replace="${title}"  → 파라미터로 받은 title 태그로 교체
+  th:replace="${links}"  → 파라미터로 받은 link 태그들로 교체
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+
+    <!-- 각 페이지에서 넘겨준 title 태그로 교체됨 -->
+    <title th:replace="${title}">레이아웃 타이틀</title>
+
+    <!-- 공통 CSS/JS: 모든 페이지에서 항상 포함됨 -->
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/awesomeapp.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+    <script type="text/javascript" th:src="@{/sh/scripts/codebase.js}"></script>
+
+    <!-- 각 페이지에서 넘겨준 추가 link 태그들로 교체됨 -->
+    <th:block th:replace="${links}"/>
+
+</head>

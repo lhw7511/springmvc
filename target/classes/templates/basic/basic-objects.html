@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+  [강의 8강] 기본 객체들
+  타임리프가 기본으로 제공하는 객체들
+  - ${request}, ${response}, ${session}, ${servletContext}: 서블릿 기본 객체
+  - ${#locale}: 현재 로케일 정보
+  편의 객체 (자주 사용):
+  - ${param.xxx}       → HTTP 요청 파라미터 접근 (?paramData=xxx)
+  - ${session.xxx}     → HTTP 세션 데이터 접근
+  - ${@빈이름.메서드()} → 스프링 빈 직접 호출
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>기본 객체들</title>
+</head>
+<body>
+<h1>식 기본 객체 (Expression Basic Objects)</h1>
+<ul>
+    <!-- 서블릿 기본 객체들 - 객체 자체를 출력하면 toString() 결과가 나옴 -->
+    <li>request = <span th:text="${request}"></span></li>
+    <li>response = <span th:text="${response}"></span></li>
+    <li>session = <span th:text="${session}"></span></li>
+    <li>servletContext = <span th:text="${servletContext}"></span></li>
+    <!-- #locale: # 을 붙이면 타임리프 유틸리티 객체 -->
+    <li>locale = <span th:text="${#locale}"></span></li>
+</ul>
+
+<h1>편의 객체</h1>
+<ul>
+    <!-- ${param.xxx}: URL 쿼리 파라미터 접근 → /basic/basic-objects?paramData=HelloParam -->
+    <li>Request Parameter = <span th:text="${param.paramData}"></span></li>
+
+    <!-- ${session.xxx}: 세션에 저장된 데이터 접근 (컨트롤러에서 session.setAttribute로 저장) -->
+    <li>session = <span th:text="${session.sessionData}"></span></li>
+
+    <!-- ${@빈이름.메서드()}: 스프링 컨테이너에 등록된 빈을 직접 호출 -->
+    <li>spring bean = <span th:text="${@helloBean.hello('Spring!')}"></span></li>
+</ul>
+</body>
+</html>

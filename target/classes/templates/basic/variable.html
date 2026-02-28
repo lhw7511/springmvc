@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+  [강의 7강] 변수 - SpringEL 표현식
+  타임리프에서 변수 접근 시 ${...} 문법 사용
+  접근 방법 3가지:
+  1. Object  → ${user.username} 또는 ${user['username']}
+  2. List    → ${users[0].username} (인덱스로 접근)
+  3. Map     → ${userMap['userA'].username} (키로 접근)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>변수 - SpringEL</title>
+</head>
+<body>
+<h1>SpringEL 표현식</h1>
+
+<!-- Object 접근: 점(.) 표기법과 괄호([]) 표기법 둘 다 가능 -->
+<ul>Object
+    <li>${user.username} = <span th:text="${user.username}"></span></li>
+    <li>${user.age} = <span th:text="${user.age}"></span></li>
+    <!-- 점 표기법과 동일한 결과, 특수문자 포함된 키 접근 시 유용 -->
+    <li>${user['username']} = <span th:text="${user['username']}"></span></li>
+    <li>${user['age']} = <span th:text="${user['age']}"></span></li>
+</ul>
+
+<!-- List 접근: 인덱스([0], [1]) 로 접근 -->
+<ul>List
+    <li>${users[0].username} = <span th:text="${users[0].username}"></span></li>
+    <li>${users[0].age} = <span th:text="${users[0].age}"></span></li>
+    <li>${users[1].username} = <span th:text="${users[1].username}"></span></li>
+    <li>${users[1].age} = <span th:text="${users[1].age}"></span></li>
+</ul>
+
+<!-- Map 접근: 키(['userA']) 로 접근 후 필드 접근 -->
+<ul>Map
+    <li>${userMap['userA'].username} = <span th:text="${userMap['userA'].username}"></span></li>
+    <li>${userMap['userA'].age} = <span th:text="${userMap['userA'].age}"></span></li>
+    <li>${userMap['userB'].username} = <span th:text="${userMap['userB'].username}"></span></li>
+    <li>${userMap['userB'].age} = <span th:text="${userMap['userB'].age}"></span></li>
+</ul>
+
+</body>
+</html>

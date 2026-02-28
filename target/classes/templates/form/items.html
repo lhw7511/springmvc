@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<!--
+  [36강] 웹 애플리케이션에 메시지 적용
+  타임리프 #{...} 문법으로 messages.properties 값 사용
+  브라우저 언어 설정에 따라 자동으로 국제화 적용됨
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Items</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.items}">상품 목록</h2>
+    </div>
+
+    <div>
+        <button class="btn btn-primary float-end"
+                onclick="location.href='addForm.html'"
+                th:onclick="|location.href='@{/form/items/add}'|"
+                type="button" th:text="#{button.save}">상품 등록
+        </button>
+    </div>
+
+    <hr class="my-4">
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <!-- 테이블 헤더도 메시지로 처리 -->
+                <th th:text="#{item.id}">ID</th>
+                <th th:text="#{item.itemName}">상품명</th>
+                <th th:text="#{item.price}">가격</th>
+                <th th:text="#{item.quantity}">수량</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td><a href="item.html" th:href="@{/form/items/{itemId}(itemId=${item.id})}"
+                       th:text="${item.id}">회원id</a></td>
+                <td><a href="item.html" th:href="@{|/form/items/${item.id}|}"
+                       th:text="${item.itemName}">상품명</a></td>
+                <td th:text="${item.price}">10000</td>
+                <td th:text="${item.quantity}">10</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

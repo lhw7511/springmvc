@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>로그인</h2>
+    </div>
+
+    <!--
+        Spring Security가 POST /login 을 직접 처리하므로 th:action 만 사용.
+        th:object 기반 바인딩 제거 → 오류 표시는 ?error 파라미터로 처리.
+    -->
+    <form th:action="@{/login}" method="post">
+
+        <!-- 로그인 실패 시 Spring Security가 /login?error=true 로 리다이렉트 -->
+        <!-- 컨트롤러에서 loginError=true 를 모델에 담아 전달함 -->
+        <div th:if="${loginError}">
+            <p class="field-error">아이디 또는 비밀번호가 맞지 않습니다.</p>
+        </div>
+
+        <div>
+            <label for="loginId">로그인 ID</label>
+            <!-- name="loginId" : SecurityConfig의 usernameParameter("loginId") 와 일치해야 함 -->
+            <input type="text" id="loginId" name="loginId" class="form-control">
+        </div>
+        <div>
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" class="form-control">
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-dark btn-lg" type="submit">로그인</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        th:onclick="|location.href='@{/home}'|" type="button">취소</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>

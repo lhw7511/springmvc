@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+  [강의 21강] 템플릿 레이아웃2 - 레이아웃 파일 (전체 HTML 레이아웃)
+  head가 아닌 HTML 전체를 레이아웃으로 만드는 방식
+  th:fragment="layout(title, content)": title과 content를 파라미터로 받음
+  - ${title}  : 각 페이지의 title 태그로 교체
+  - ${content}: 각 페이지의 본문 내용으로 교체
+  → 헤더, 푸터 등 전체 구조를 공통화하고, 본문만 각 페이지에서 정의
+-->
+<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 각 페이지에서 넘겨준 title 태그로 교체 -->
+    <title th:replace="${title}">레이아웃 타이틀</title>
+</head>
+<body>
+<!-- 공통 헤더 영역 -->
+<h1>레이아웃 H1</h1>
+
+<!-- 각 페이지에서 넘겨준 content 영역으로 교체됨 -->
+<div th:replace="${content}">
+    <p>레이아웃 컨텐츠</p>
+</div>
+
+<!-- 공통 푸터 영역 -->
+<footer>
+    레이아웃 푸터
+</footer>
+
+</body>
+</html>

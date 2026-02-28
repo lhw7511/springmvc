@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+  [강의 15강] 조건부 평가
+  조건에 따라 HTML 요소를 렌더링하거나 아예 제거
+  - th:if    : 조건이 true일 때만 해당 태그 렌더링 (false면 태그 자체가 사라짐)
+  - th:unless: 조건이 false일 때만 렌더링 (th:if 의 반대)
+  - th:switch / th:case: 자바 switch 문과 동일
+    th:case="*" → default (어떤 case에도 해당 안 될 때)
+  ⚠️ th:if 조건이 false면 해당 태그가 HTML에서 완전히 제거됨 (display:none 이 아님!)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>조건부 평가</title>
+</head>
+<body>
+
+<h1>if, unless</h1>
+<table border="1">
+    <tr>
+        <th>count</th>
+        <th>username</th>
+        <th>age</th>
+    </tr>
+    <tr th:each="user, userStat : ${users}">
+        <td th:text="${userStat.count}">1</td>
+        <td th:text="${user.username}">username</td>
+        <td>
+            <span th:text="${user.age}">0</span>
+            <!-- th:if: age < 20 이면 "미성년자" 텍스트 span 렌더링, 아니면 태그 자체 제거 -->
+            <span th:text="'미성년자'" th:if="${user.age lt 20}"></span>
+            <!-- th:unless: age >= 20 이 아니면(= age < 20 이면) 렌더링 → 위와 동일한 결과 -->
+            <span th:text="'미성년자'" th:unless="${user.age ge 20}"></span>
+        </td>
+    </tr>
+</table>
+
+<h1>switch</h1>
+<table border="1">
+    <tr>
+        <th>count</th>
+        <th>username</th>
+        <th>age</th>
+    </tr>
+    <tr th:each="user, userStat : ${users}">
+        <td th:text="${userStat.count}">1</td>
+        <td th:text="${user.username}">username</td>
+        <!-- th:switch: user.age 값에 따라 해당 th:case 만 렌더링 -->
+        <td th:switch="${user.age}">
+            <span th:case="10">10살</span>
+            <span th:case="20">20살</span>
+            <!-- th:case="*": default, 위 case에 해당 없을 때 렌더링 -->
+            <span th:case="*">기타</span>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

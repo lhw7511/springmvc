@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+  [강의 11강] 리터럴
+  리터럴: 소스 코드에 고정된 값 (변수가 아닌 값)
+  타임리프 리터럴 종류:
+  - 문자: 작은 따옴표로 감싸야 함 ('hello') → 공백 포함 시 반드시 필요!
+  - 숫자: 그대로 사용 (10, 20)
+  - 불린: true, false
+  - null: null
+
+  ⚠️ 주의: 'hello world' 처럼 공백이 있으면 반드시 따옴표로 감싸야 함
+           'hello world' (O) / hello world (X) → 오류 발생!
+
+  리터럴 대체(Literal Substitutions):
+  - |hello ${data}| 문법으로 문자 + 변수를 편리하게 조합
+  - 기존: 'hello ' + ${data} → 대체: |hello ${data}|
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리터럴</title>
+</head>
+<body>
+
+<h1>리터럴</h1>
+<ul>
+    <!--⚠️ 주의! 아래 주석을 풀면 공백 때문에 예외 발생함-->
+    <!-- <li><span th:text="hello world!"></span></li>-->
+
+    <!-- 문자 리터럴: 작은 따옴표로 감싸야 함 -->
+    <li>문자 리터럴 = <span th:text="'hello'"></span></li>
+
+    <!-- 공백 포함 문자: 반드시 따옴표로 감싸야 함 -->
+    <li>문자 리터럴 + 공백 = <span th:text="'hello world!'"></span></li>
+
+    <!-- 숫자 리터럴: 따옴표 없이 그대로 사용, 산술 연산도 가능 -->
+    <li>숫자 리터럴 = <span th:text="10 + 20 + 1"></span></li>
+
+    <!-- 불린 리터럴: true / false -->
+    <li>불린 리터럴 = <span th:text="true"></span></li>
+
+    <!-- null 리터럴 -->
+    <li>null 리터럴 = <span th:text="null"></span></li>
+</ul>
+
+<h1>리터럴 대체(Literal Substitutions)</h1>
+<ul>
+    <!-- | | 안에서 문자와 변수를 자유롭게 조합 가능 → 실무에서 자주 사용! -->
+    <!-- 기존 방식: 'hello ' + ${data} -->
+    <li>리터럴 대체 = <span th:text="|hello ${data}|"></span></li>
+</ul>
+
+</body>
+</html>
