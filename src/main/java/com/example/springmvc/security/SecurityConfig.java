@@ -116,6 +116,7 @@ public class SecurityConfig {
                 // 위에서 만든 Redis 기반 레지스트리를 사용하도록 지정
                 // 이걸 설정 안 하면 기본 InMemory 레지스트리를 사용해서 중복 감지가 안 됨
                 .sessionRegistry(sessionRegistry())
+                .expiredUrl("/login?expired")
 
                 // maxSessionsPreventsLogin(true)  → 이미 로그인 중이면 새 로그인 차단 (2번 방식)
                 // maxSessionsPreventsLogin(false) → 새 로그인 허용, 기존 세션 만료 (1번 방식, 기본값)
