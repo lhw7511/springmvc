@@ -6,7 +6,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.Session;
+import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 /**
  * Spring Security 설정 클래스
@@ -26,6 +30,40 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    /**
+     * FindByIndexNameSessionRepository
+     *
+     * Spring Session이 Redis에 세션을 저장할 때 사용하는 저장소 인터페이스.
+     * "사용자 이름으로 세션을 찾는" 기능을 제공한다.
+     *
+     * 예) test 계정으로 로그인한 세션이 몇 개인지 Redis에서 조회 가능
+     * → 이 기능이 있어야 중복 로그인 감지가 가능함
+     *
+     * Spring Boot가 spring-session-data-redis 의존성을 보고 자동으로 빈을 생성해준다.
+     * 여기서는 생성자 주입으로 받아서 sessionRegistry()에서 사용한다.
+     */
+    private final FindByIndexNameSessionRepository<? extends Session> sessionRepository;
+
+    public SecurityConfig(FindByIndexNameSessionRepository<? extends Session> sessionRepository) {
+        this.sessionRepository = sessionRepository;
+    }
+
+    /**
+     * SpringSessionBackedSessionRegistry
+     *
+     * Spring Security의 동시 세션 제어에서 "현재 로그인된 세션 목록"을 관리하는 역할.
+     *
+     * 기본 구현체인 SessionRegistryImpl은 JVM 메모리에 세션 목록을 저장한다.
+     * → Redis를 세션 저장소로 쓰면 Security는 메모리, 실제 세션은 Redis → 따로 놀아서 중복 감지 안 됨
+     *
+     * SpringSessionBackedSessionRegistry는 Redis에서 직접 세션 목록을 조회하기 때문에
+     * Redis 세션 저장소와 Security의 동시 세션 제어가 정상적으로 연동된다.
+     */
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SpringSessionBackedSessionRegistry<>(sessionRepository);
+    }
 
     /**
      * HTTP 보안 규칙 정의
@@ -65,8 +103,22 @@ public class SecurityConfig {
                 .logoutUrl("/logout")                 // 로그아웃 요청 URL (POST)
                 .logoutSuccessUrl("/home")            // 로그아웃 성공 후 이동 URL
                 .invalidateHttpSession(true)          // 세션 무효화
-                .deleteCookies("JSESSIONID")          // 세션 쿠키 삭제
+                .deleteCookies("RSESSIONID")          // 세션 쿠키 삭제
                 .permitAll()
+            )
+            // 동시 세션 제어
+            // 동일 계정으로 중복 로그인이 들어왔을 때 어떻게 처리할지 정의한다
+            .sessionManagement(session -> session
+                // 한 계정당 허용할 최대 동시 세션 수
+                // 1로 설정 → A 기기에서 로그인 중인 상태에서 B 기기로 로그인하면 A 세션이 만료됨
+                .maximumSessions(1)
+
+                // 위에서 만든 Redis 기반 레지스트리를 사용하도록 지정
+                // 이걸 설정 안 하면 기본 InMemory 레지스트리를 사용해서 중복 감지가 안 됨
+                .sessionRegistry(sessionRegistry())
+
+                // maxSessionsPreventsLogin(true)  → 이미 로그인 중이면 새 로그인 차단 (2번 방식)
+                // maxSessionsPreventsLogin(false) → 새 로그인 허용, 기존 세션 만료 (1번 방식, 기본값)
             );
 
         return http.build();
