@@ -10,6 +10,9 @@
             color: #dc3545;
         }
     </style>
+    <script th:if="${param.expired}">
+        alert('다른 기기에서 로그인되어 세션이 만료되었습니다.');
+    </script>
 </head>
 <body>
 <div class="container" style="max-width: 600px">
